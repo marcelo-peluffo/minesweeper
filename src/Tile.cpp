@@ -1,11 +1,7 @@
 #include "Tile.h"
+#include <random>
 
-Tile::Tile(int adjacent_bombs, bool has_bomb)
-    : m_adjacent_bombs(adjacent_bombs), m_has_bomb(has_bomb) {}
-
-Tile::Tile(int adjacent_bombs) : Tile(adjacent_bombs, false) {}
-
-Tile::Tile(bool has_bomb) : Tile(0, has_bomb) {}
+Tile::Tile() : m_has_bomb(random_should_have_bomb()) {}
 
 // getters
 
@@ -26,3 +22,15 @@ auto Tile::set_adjacent_bombs(int adjacent_bombs) -> void {
 auto Tile::set_has_bomb(bool has_bomb) -> void { m_has_bomb = has_bomb; }
 
 auto Tile::set_has_flag(bool has_flag) -> void { m_has_flag = has_flag; }
+
+auto Tile::random_should_have_bomb() -> bool {
+  constexpr auto bottom_range{1};
+  constexpr auto top_range{10};
+  constexpr auto decimal_chance_for_mine{1.5};
+
+  std::random_device rand_d;
+  std::mt19937 gen(rand_d());
+  std::uniform_int_distribution<int> distrib(bottom_range, top_range);
+
+  return distrib(gen) <= decimal_chance_for_mine;
+}
