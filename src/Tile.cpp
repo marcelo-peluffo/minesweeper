@@ -15,8 +15,14 @@ Tile::Tile(bool has_bomb) : Tile(0, has_bomb) {}
 
 [[nodiscard]] auto Tile::has_bomb() const -> bool { return m_has_bomb; }
 
+[[nodiscard]] auto Tile::has_flag() const -> bool { return m_has_flag; }
+
+// setters
+
 auto Tile::set_adjacent_bombs(int adjacent_bombs) -> void {
   m_adjacent_bombs = adjacent_bombs;
 }
 
 auto Tile::set_has_bomb(bool has_bomb) -> void { m_has_bomb = has_bomb; }
+
+auto Tile::set_has_flag(bool has_flag) -> void { m_has_flag = has_flag; }
