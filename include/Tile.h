@@ -1,10 +1,8 @@
+#pragma once
 
 class Tile {
 public:
-  explicit Tile() = default;
-  explicit Tile(int adjacent_bombs, bool has_bomb);
-  explicit Tile(int adjacent_bombs);
-  explicit Tile(bool has_bomb);
+  explicit Tile();
 
   [[nodiscard]] auto get_adjacent_bombs() const -> int;
   [[nodiscard]] auto has_bomb() const -> bool;
@@ -18,4 +16,6 @@ private:
   int m_adjacent_bombs;
   bool m_has_bomb;
   bool m_has_flag;
+
+  static auto random_should_have_bomb() -> bool;
 };
