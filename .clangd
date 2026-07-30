@@ -1,0 +1,35 @@
+# Sample clangd project config.
+#
+# clangd reads this from the ROOT OF THE C/C++ PROJECT you're editing, not
+# from this Neovim config directory. Copy this file into each C++ project
+# as `.clangd` (leading dot, no extension):
+#
+#   cp .clangd.example /path/to/your/project/.clangd
+#
+# Reference: https://clangd.llvm.org/config
+
+CompileFlags:
+  # Used when no compile_commands.json is found (cmake-tools.nvim generates
+  # one at cmake_build_directory and symlinks it to the project root).
+  Add: [-std=c++20, -Wall, -Wextra]
+  CompilationDatabase: build
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - bugprone-*
+      - modernize-*
+      - performance-*
+      - readability-*
+    Remove:
+      - modernize-use-trailing-return-type
+    CheckOptions:
+      readability-identifier-naming.VariableCase: lower_case
+
+Index:
+  Background: Build
+
+InlayHints:
+  Enabled: true
+  ParameterNames: true
+  DeducedTypes: true
