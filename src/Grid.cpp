@@ -8,3 +8,7 @@ Grid::Grid()
           static_cast<int>(std::ranges::count_if(m_matrix, &Tile::has_bomb))) {}
 
 auto Grid::get_matrix() const -> const std::vector<Tile> & { return m_matrix; }
+
+auto Grid::operator()(int row, int col) -> Tile & {
+  return m_matrix[(row * constants::number_of_tiles_per_row) + col];
+}
