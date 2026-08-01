@@ -8,6 +8,7 @@ public:
   Grid();
   [[nodiscard]] auto get_matrix() const -> const std::vector<Tile> &;
   [[nodiscard]] auto get_neighbors_of(const Tile &tile) -> std::vector<Tile>;
+  [[nodiscard]] auto operator()(int row, int col) -> Tile &;
 
 private:
   std::vector<Tile> m_matrix;
