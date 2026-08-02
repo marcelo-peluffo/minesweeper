@@ -2,6 +2,8 @@
 
 namespace constants {
 
+inline constexpr auto width{1920};
+inline constexpr auto height{1080};
 inline constexpr auto exit_code_success{0};
 inline constexpr auto number_of_tiles_per_row{10};
 inline constexpr auto number_of_rows{8};
