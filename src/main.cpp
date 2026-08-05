@@ -1,6 +1,7 @@
 #include "constants.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 struct Tile {
@@ -14,6 +15,7 @@ struct GameState {
 };
 
 auto render(sf::RenderWindow &window, const GameState &state) -> void;
+auto input(sf::RenderWindow &window, const GameState &state) -> void;
 
 int main() {
   GameState game_state{};
@@ -22,6 +24,7 @@ int main() {
 
   while (!game_state.game_over_) {
     render(window, game_state);
+    input(window, game_state);
   }
 
   window.close();
@@ -32,7 +35,14 @@ int main() {
 auto render(sf::RenderWindow &window, const GameState &state) -> void {
 
   window.clear(sf::Color::White);
-  // draw here
 
   window.display();
+}
+
+auto input(sf::RenderWindow &window, const GameState &state) -> void {
+  while (auto event{window.pollEvent()}) {
+    if (event->is<sf::Event::Closed>()) {
+      window.close();
+    }
+  }
 }
