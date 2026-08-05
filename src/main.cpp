@@ -71,10 +71,21 @@ auto render(sf::RenderWindow &window, const GameContext &context) -> void {
   window.display();
 }
 
-auto input(sf::RenderWindow &window, const GameContext &context) -> void {
+auto input(sf::RenderWindow &window, GameContext &context) -> void {
   while (auto event{window.pollEvent()}) {
     if (event->is<sf::Event::Closed>()) {
       window.close();
+    }
+
+    if (const auto *mouse{event->getIf<sf::Event::MouseButtonPressed>()}) {
+      if (mouse->button == sf::Mouse::Button::Left) {
+        std::ranges::for_each(context.grid_, [mouse](auto &tile) {
+          if (tile.shape_.getGlobalBounds().contains(
+                  static_cast<float>(mouse->position))) {
+            tile.clicked_ = true;
+          }
+        });
+      }
     }
   }
 }
