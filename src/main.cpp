@@ -1,8 +1,10 @@
+#include "Grid.h"
 #include "constants.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 
 int main() {
+  Grid grid;
   sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}),
                           "Game");
 
