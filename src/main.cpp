@@ -25,6 +25,7 @@ struct Tile {
   Tile() : id_(counter++) {
     shape_.setFillColor(sf::Color::Green);
     shape_.setPosition(tile_position(id_, num_cols, width, height));
+    shape_.setSize(sf::Vector2f(width - 10, height - 10));
   }
 
   inline static auto counter{0};
@@ -38,6 +39,7 @@ struct Tile {
 };
 
 struct GameContext {
+  GameContext() : grid_(25) {}
   std::vector<Tile> grid_;
   State state_{State::start};
   bool game_over_{};
@@ -47,12 +49,11 @@ auto render(sf::RenderWindow &window, const GameContext &context) -> void;
 auto input(sf::RenderWindow &window, const GameContext &context) -> void;
 
 int main() {
-
   GameContext game_context{};
   sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}),
                           "Minesweeper");
 
-  while (!game_context.game_over_) {
+  while (window.isOpen()) {
     render(window, game_context);
     input(window, game_context);
   }
@@ -65,7 +66,8 @@ int main() {
 auto render(sf::RenderWindow &window, const GameContext &context) -> void {
 
   window.clear(sf::Color::White);
-  std::ranges::for_each(context.grid_, [](auto &tile) {});
+  std::ranges::for_each(context.grid_,
+                        [&window](auto &tile) { window.draw(tile.shape_); });
   window.display();
 }
 
