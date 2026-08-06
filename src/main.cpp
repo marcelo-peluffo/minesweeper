@@ -7,10 +7,6 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <algorithm>
-#include <iostream>
-
-inline constexpr auto num_rows{5};
-inline constexpr auto num_cols{5};
 
 enum class State : uint8_t { start, end, died };
 
@@ -25,8 +21,9 @@ constexpr auto tile_position(int id, int cols, int tile_width, int tile_height)
 struct Tile {
   Tile() : id_(counter++) {
     shape_.setFillColor(sf::Color::Green);
-    shape_.setPosition(tile_position(id_, num_cols, width, height));
-    shape_.setSize(sf::Vector2f(width - 10, height - 10));
+    shape_.setPosition(tile_position(id_, constants::num_cols, width, height));
+    shape_.setSize(sf::Vector2f(width - constants::space_between_tiles,
+                                height - constants::space_between_tiles));
   }
 
   inline static auto counter{0};
@@ -40,7 +37,8 @@ struct Tile {
 };
 
 struct GameContext {
-  GameContext() : grid_(25) {}
+  GameContext()
+      : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols)) {}
   std::vector<Tile> grid_;
   State state_{State::start};
   bool game_over_{};
@@ -76,9 +74,8 @@ auto input(sf::RenderWindow &window, GameContext &context) -> void {
   while (auto event{window.pollEvent()}) {
     if (event->is<sf::Event::Closed>()) {
       window.close();
-    }
-
-    if (const auto *mouse{event->getIf<sf::Event::MouseButtonPressed>()}) {
+    } else if (const auto *mouse{
+                   event->getIf<sf::Event::MouseButtonPressed>()}) {
       if (mouse->button == sf::Mouse::Button::Left) {
         std::ranges::for_each(context.grid_, [mouse](Tile &tile) {
           if (tile.shape_.getGlobalBounds().contains(
