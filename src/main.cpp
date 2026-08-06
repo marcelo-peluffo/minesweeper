@@ -7,6 +7,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <algorithm>
+#include <iostream>
 
 inline constexpr auto num_rows{5};
 inline constexpr auto num_cols{5};
@@ -45,8 +46,8 @@ struct GameContext {
   bool game_over_{};
 };
 
-auto render(sf::RenderWindow &window, const GameContext &context) -> void;
-auto input(sf::RenderWindow &window, const GameContext &context) -> void;
+auto render(sf::RenderWindow &window, GameContext &context) -> void;
+auto input(sf::RenderWindow &window, GameContext &context) -> void;
 
 int main() {
   GameContext game_context{};
@@ -63,7 +64,7 @@ int main() {
   return 0;
 }
 
-auto render(sf::RenderWindow &window, const GameContext &context) -> void {
+auto render(sf::RenderWindow &window, GameContext &context) -> void {
 
   window.clear(sf::Color::White);
   std::ranges::for_each(context.grid_,
@@ -79,9 +80,10 @@ auto input(sf::RenderWindow &window, GameContext &context) -> void {
 
     if (const auto *mouse{event->getIf<sf::Event::MouseButtonPressed>()}) {
       if (mouse->button == sf::Mouse::Button::Left) {
-        std::ranges::for_each(context.grid_, [mouse](auto &tile) {
+        std::ranges::for_each(context.grid_, [mouse](Tile &tile) {
           if (tile.shape_.getGlobalBounds().contains(
-                  static_cast<float>(mouse->position))) {
+                  static_cast<sf::Vector2f>(mouse->position))) {
+            tile.shape_.setFillColor(sf::Color::Red);
             tile.clicked_ = true;
           }
         });
