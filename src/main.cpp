@@ -39,9 +39,12 @@ struct Tile {
 struct GameContext {
   GameContext()
       : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols)) {}
+
+  GameContext(std::vector<Tile> &grid, State state)
+      : grid_(std::move(grid)), state_(state) {}
+
   std::vector<Tile> grid_;
   State state_{State::start};
-  bool game_over_{};
 };
 
 auto render(sf::RenderWindow &window, GameContext &context) -> void;
@@ -49,6 +52,7 @@ auto input(sf::RenderWindow &window, GameContext &context) -> void;
 
 int main() {
   GameContext game_context{};
+  game_context.grid_[0].has_bomb_ = true; // test
   sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}),
                           "Minesweeper");
 
@@ -70,6 +74,21 @@ auto render(sf::RenderWindow &window, GameContext &context) -> void {
   window.display();
 }
 
+// apply pattern of returning game context instead of just modifying reference
+// (functional programming)
+auto handle_clicked_tile(const Tile &tile, GameContext &context)
+    -> GameContext {
+  if (tile.has_bomb_) {
+    return GameContext{context.grid_, State::end};
+  }
+
+  // if no bomb, show the surrounding free spaces
+
+  return context;
+}
+
+// ugly formatting also i dont like context& everywhere
+
 auto input(sf::RenderWindow &window, GameContext &context) -> void {
   while (auto event{window.pollEvent()}) {
     if (event->is<sf::Event::Closed>()) {
@@ -77,11 +96,12 @@ auto input(sf::RenderWindow &window, GameContext &context) -> void {
     } else if (const auto *mouse{
                    event->getIf<sf::Event::MouseButtonPressed>()}) {
       if (mouse->button == sf::Mouse::Button::Left) {
-        std::ranges::for_each(context.grid_, [mouse](Tile &tile) {
+        std::ranges::for_each(context.grid_, [mouse, &context](Tile &tile) {
           if (tile.shape_.getGlobalBounds().contains(
                   static_cast<sf::Vector2f>(mouse->position))) {
             tile.shape_.setFillColor(sf::Color::Red);
             tile.clicked_ = true;
+            handle_clicked_tile(tile, context);
           }
         });
       }
