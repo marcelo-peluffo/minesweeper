@@ -9,7 +9,12 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <string>
 #include "constants.h"
+
+namespace Text {
+const sf::Font font("/usr/share/fonts/TTF/UbuntuMonoNerdFont-Regular.ttf");
+}
 
 enum class State : uint8_t { start, end, died };
 
@@ -20,10 +25,12 @@ constexpr auto tile_position(int id, int cols, int tile_width, int tile_height) 
 }
 
 struct Tile {
-    Tile() : id_(counter++) {
+    Tile() : text_neighboring_bombs_(Text::font, "0"), has_bomb_(should_have_bomb()), id_(counter++) {
         shape_.setFillColor(sf::Color::Green);
         shape_.setPosition(tile_position(id_, constants::num_cols, width, height));
         shape_.setSize(sf::Vector2f(width - constants::space_between_tiles, height - constants::space_between_tiles));
+
+        text_neighboring_bombs_.setPosition(shape_.getPosition());
     }
 
     static auto should_have_bomb() -> bool {
@@ -39,6 +46,7 @@ struct Tile {
     static constexpr auto width{100};
     static constexpr auto height{100};
     sf::RectangleShape shape_;
+    sf::Text text_neighboring_bombs_;
     bool clicked_{};
     bool has_bomb_{};
     int neighboring_bombs_{};
@@ -51,6 +59,7 @@ struct GameContext {
     GameContext() : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols)) {
         std::ranges::for_each(grid_.begin(), grid_.end(), [this](auto& tile) {
             tile.neighboring_bombs_ = find_neighboring_bombs(grid_, tile.id_);
+            tile.text_neighboring_bombs_.setString(std::to_string(tile.neighboring_bombs_));
         });
     }
 
@@ -65,7 +74,6 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void;
 
 int main() {
     GameContext game_context{};
-    game_context.grid_[12].has_bomb_ = true;  // test
     sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}), "Minesweeper");
 
     while (game_context.state_ != State::end) {
@@ -80,7 +88,12 @@ int main() {
 
 auto render(sf::RenderWindow& window, GameContext& context) -> void {
     window.clear(sf::Color::White);
-    std::ranges::for_each(context.grid_, [&window](auto& tile) { window.draw(tile.shape_); });
+    std::ranges::for_each(context.grid_, [&window](auto& tile) {
+        window.draw(tile.shape_);
+        if (tile.clicked_) {
+            window.draw(tile.text_neighboring_bombs_);
+        }
+    });
     window.display();
 }
 
