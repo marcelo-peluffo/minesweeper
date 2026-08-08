@@ -8,6 +8,7 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <algorithm>
 #include <iostream>
+#include <random>
 #include "constants.h"
 
 enum class State : uint8_t { start, end, died };
@@ -23,6 +24,15 @@ struct Tile {
         shape_.setFillColor(sf::Color::Green);
         shape_.setPosition(tile_position(id_, constants::num_cols, width, height));
         shape_.setSize(sf::Vector2f(width - constants::space_between_tiles, height - constants::space_between_tiles));
+    }
+
+    static auto should_have_bomb() -> bool {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<int> distrib(1, 100);
+
+        const auto random_num{distrib(gen)};
+        return random_num <= 15;  // 15% chance of a tile generating a bomb
     }
 
     inline static auto counter{0};
