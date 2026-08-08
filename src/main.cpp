@@ -2,6 +2,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -34,8 +35,14 @@ struct Tile {
     int id_{};
 };
 
+auto find_neighboring_bombs(const std::vector<Tile>& grid, int tile_id) -> int;
+
 struct GameContext {
-    GameContext() : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols)) {}
+    GameContext() : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols)) {
+        std::ranges::for_each(grid_.begin(), grid_.end(), [this](auto& tile) {
+            tile.neighboring_bombs_ = find_neighboring_bombs(grid_, tile.id_);
+        });
+    }
 
     GameContext(std::vector<Tile>& grid, State state) : grid_(std::move(grid)), state_(state) {}
 
@@ -48,7 +55,7 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void;
 
 int main() {
     GameContext game_context{};
-    game_context.grid_[0].has_bomb_ = true;  // test
+    game_context.grid_[12].has_bomb_ = true;  // test
     sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}), "Minesweeper");
 
     while (game_context.state_ != State::end) {
@@ -98,4 +105,24 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void {
             }
         }
     }
+}
+
+auto find_neighboring_bombs(const std::vector<Tile>& grid, int tile_id) -> int {
+    const auto row{tile_id / constants::num_cols};
+    const auto col{tile_id % constants::num_cols};
+    auto count{0};
+
+    for (int i{std::max(0, row - 1)}; i <= std::min(constants::num_rows - 1, row + 1); ++i) {
+        for (int j{std::max(0, col - 1)}; j <= std::min(constants::num_cols - 1, col + 1); ++j) {
+            if (i == row && j == col) {
+                continue;
+            }
+
+            if (grid[(i * constants::num_cols) + j].has_bomb_) {
+                ++count;
+            }
+        }
+    }
+
+    return count;
 }
