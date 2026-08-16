@@ -1,16 +1,16 @@
 #pragma once
 
-namespace constants {
-
+namespace constants
+{
 inline constexpr auto width{1920};
 inline constexpr auto height{1080};
-inline constexpr auto exit_code_success{0};
-inline constexpr auto number_of_tiles_per_row{10};
-inline constexpr auto number_of_rows{8};
-inline constexpr auto number_of_tiles{number_of_rows * number_of_tiles_per_row};
-inline constexpr auto percent_chance_for_bomb{25};
-inline constexpr auto space_between_tiles{10};
-inline constexpr auto num_rows{5};
-inline constexpr auto num_cols{5};
-
-} // namespace constants
+inline constexpr auto exitCodeSuccess{0};
+inline constexpr auto numberOfTilesPerRow{10};
+inline constexpr auto numberOfRows{8};
+inline constexpr auto numberOfTiles{numberOfRows * numberOfTilesPerRow};
+inline constexpr auto percentChanceForBomb{25};
+inline constexpr auto spaceBetweenTiles{10};
+inline constexpr auto numRows{5};
+inline constexpr auto numCols{5};
+inline constexpr auto chanceForBomb{15};
+}  // namespace constants
