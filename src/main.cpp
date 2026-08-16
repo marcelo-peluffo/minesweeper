@@ -10,11 +10,8 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include "Text.h"
 #include "constants.h"
-
-namespace Text {
-const sf::Font font("/usr/share/fonts/TTF/UbuntuMonoNerdFont-Regular.ttf");
-}
 
 enum class State : uint8_t { start, end, died };
 
@@ -25,7 +22,7 @@ constexpr auto tile_position(int id, int cols, int tile_width, int tile_height) 
 }
 
 struct Tile {
-    Tile() : text_neighboring_bombs_(Text::font, "0"), has_bomb_(should_have_bomb()), id_(counter++) {
+    Tile() : text_neighboring_bombs_(Text::font, Text::noBombs), has_bomb_(should_have_bomb()), id_(counter++) {
         shape_.setFillColor(sf::Color::Green);
         shape_.setPosition(tile_position(id_, constants::num_cols, width, height));
         shape_.setSize(sf::Vector2f(width - constants::space_between_tiles, height - constants::space_between_tiles));
@@ -74,7 +71,7 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void;
 
 int main() {
     GameContext game_context{};
-    sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}), "Minesweeper");
+    sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}), Text::gameTitle);
 
     while (game_context.state_ != State::end) {
         render(window, game_context);

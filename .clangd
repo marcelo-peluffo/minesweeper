@@ -11,8 +11,8 @@
 CompileFlags:
   # Used when no compile_commands.json is found (cmake-tools.nvim generates
   # one at cmake_build_directory and symlinks it to the project root).
-  Add: [-std=c++20, -Wall, -Wextra]
-  CompilationDatabase: build
+  Add: [-std=c++23, -Wall, -Wextra]
+  CompilationDatabase: out/Debug
 
 Diagnostics:
   ClangTidy:
@@ -24,7 +24,7 @@ Diagnostics:
     Remove:
       - modernize-use-trailing-return-type
     CheckOptions:
-      readability-identifier-naming.VariableCase: lower_case
+      readability-identifier-naming.VariableCase: camelBack
 
 Index:
   Background: Build

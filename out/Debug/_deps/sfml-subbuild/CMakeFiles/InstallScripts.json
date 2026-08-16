@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/marcelo/projects/minesweeper/out/Debug/_deps/sfml-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
