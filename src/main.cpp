@@ -20,17 +20,17 @@ enum class State : uint8_t
     died
 };
 
-auto find_neighboring_bombs(const std::vector<Tile>& grid, int tile_id) -> int;
+auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int;
 
 struct GameContext
 {
-    GameContext() : grid_(static_cast<size_t>(constants::num_rows * constants::num_cols))
+    GameContext() : grid_(static_cast<size_t>(constants::numRows * constants::numCols))
     {
         std::ranges::for_each(grid_.begin(), grid_.end(),
                               [this](auto& tile)
                               {
-                                  tile.neighboring_bombs_ = find_neighboring_bombs(grid_, tile.id_);
-                                  tile.text_neighboring_bombs_.setString(std::to_string(tile.neighboring_bombs_));
+                                  tile.neighboringBombs_ = findNeighboringBombs(grid_, tile.id_);
+                                  tile.textNeighboringBombs_.setString(std::to_string(tile.neighboringBombs_));
                               });
     }
 
@@ -68,7 +68,7 @@ auto render(sf::RenderWindow& window, GameContext& context) -> void
                               window.draw(tile.shape_);
                               if (tile.clicked_)
                               {
-                                  window.draw(tile.text_neighboring_bombs_);
+                                  window.draw(tile.textNeighboringBombs_);
                               }
                           });
     window.display();
@@ -78,7 +78,7 @@ auto render(sf::RenderWindow& window, GameContext& context) -> void
 // (functional programming)
 auto handle_clicked_tile(const Tile& tile, GameContext& context) -> GameContext
 {
-    if (tile.has_bomb_)
+    if (tile.hasBomb_)
     {
         std::cout << "You have clicked a bomb!\n";
         return GameContext{context.grid_, State::end};
@@ -119,22 +119,22 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void
     }
 }
 
-auto find_neighboring_bombs(const std::vector<Tile>& grid, int tile_id) -> int
+auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int
 {
-    const auto row{tile_id / constants::num_cols};
-    const auto col{tile_id % constants::num_cols};
+    const auto row{tile_id / constants::numCols};
+    const auto col{tile_id % constants::numCols};
     auto count{0};
 
-    for (int i{std::max(0, row - 1)}; i <= std::min(constants::num_rows - 1, row + 1); ++i)
+    for (int i{std::max(0, row - 1)}; i <= std::min(constants::numRows - 1, row + 1); ++i)
     {
-        for (int j{std::max(0, col - 1)}; j <= std::min(constants::num_cols - 1, col + 1); ++j)
+        for (int j{std::max(0, col - 1)}; j <= std::min(constants::numCols - 1, col + 1); ++j)
         {
             if (i == row && j == col)
             {
                 continue;
             }
 
-            if (grid[(i * constants::num_cols) + j].has_bomb_)
+            if (grid[(i * constants::numCols) + j].hasBomb_)
             {
                 ++count;
             }
