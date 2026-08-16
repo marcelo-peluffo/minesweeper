@@ -16,6 +16,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Minesweeper src/main.cpp src/Tile.cpp)
+add_executable(Minesweeper src/main.cpp src/Tile.cpp src/GameContext.cpp)
 target_include_directories(Minesweeper PRIVATE include)
 target_link_libraries(Minesweeper PRIVATE SFML::Graphics SFML::Window SFML::System)

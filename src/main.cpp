@@ -8,44 +8,24 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <algorithm>
 #include <iostream>
-#include <string>
 #include "Text.h"
 #include "Tile.h"
 #include "constants.h"
 #include "State.h"
-
-auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int;
-
-struct GameContext
-{
-    GameContext() : grid_(static_cast<size_t>(constants::numRows * constants::numCols))
-    {
-        std::ranges::for_each(grid_.begin(), grid_.end(),
-                              [this](auto& tile)
-                              {
-                                  tile.neighboringBombs_ = findNeighboringBombs(grid_, tile.id_);
-                                  tile.textNeighboringBombs_.setString(std::to_string(tile.neighboringBombs_));
-                              });
-    }
-
-    GameContext(std::vector<Tile>& grid, State state) : grid_(std::move(grid)), state_(state) {}
-
-    std::vector<Tile> grid_;
-    State state_{State::start};
-};
+#include "GameContext.h"
 
 auto render(sf::RenderWindow& window, GameContext& context) -> void;
 auto input(sf::RenderWindow& window, GameContext& context) -> void;
 
 int main()
 {
-    GameContext game_context{};
+    GameContext gameContext{};
     sf::RenderWindow window(sf::VideoMode({constants::width, constants::height}), Text::gameTitle);
 
-    while (game_context.state_ != State::end)
+    while (gameContext.state_ != State::end)
     {
-        render(window, game_context);
-        input(window, game_context);
+        render(window, gameContext);
+        input(window, gameContext);
     }
 
     window.close();
@@ -111,29 +91,4 @@ auto input(sf::RenderWindow& window, GameContext& context) -> void
             }
         }
     }
-}
-
-auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int
-{
-    const auto row{tile_id / constants::numCols};
-    const auto col{tile_id % constants::numCols};
-    auto count{0};
-
-    for (int i{std::max(0, row - 1)}; i <= std::min(constants::numRows - 1, row + 1); ++i)
-    {
-        for (int j{std::max(0, col - 1)}; j <= std::min(constants::numCols - 1, col + 1); ++j)
-        {
-            if (i == row && j == col)
-            {
-                continue;
-            }
-
-            if (grid[(i * constants::numCols) + j].hasBomb_)
-            {
-                ++count;
-            }
-        }
-    }
-
-    return count;
 }
