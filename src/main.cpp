@@ -12,13 +12,7 @@
 #include "Text.h"
 #include "Tile.h"
 #include "constants.h"
-
-enum class State : uint8_t
-{
-    start,
-    end,
-    died
-};
+#include "State.h"
 
 auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int;
 
