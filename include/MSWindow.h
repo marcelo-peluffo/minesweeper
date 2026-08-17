@@ -10,6 +10,7 @@ class MSWindow
     auto render(const GameContext& context) -> void;
     auto pollEvent() -> const std::optional<sf::Event>&;
     auto handleLastEvent(GameContext& context) -> void;
+    [[nodiscard]] auto isOpen() const -> bool;
 
    private:
     sf::RenderWindow underlyingWindow_;

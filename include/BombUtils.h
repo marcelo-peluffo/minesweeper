@@ -8,7 +8,7 @@
 // should maybe move this to .cpp impl
 namespace BombUtils
 {
-auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int
+inline auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int
 {
     const auto row{tile_id / constants::numCols};
     const auto col{tile_id % constants::numCols};
@@ -33,10 +33,11 @@ auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> int
     return count;
 }
 
-auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) -> std::optional<Tile>
+inline auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) -> std::optional<Tile>
 {
     for (const auto& tile : grid)
-    { if (tile.shape_.getGlobalBounds().contains(mousePos))
+    {
+        if (tile.shape_.getGlobalBounds().contains(mousePos))
         {
             return tile;
         }
@@ -46,7 +47,7 @@ auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) -> std:
 }
 
 // only setting state, not actually doing something with the new state
-auto handleTileClick(Tile& chosenTile, ::sf::Mouse::Button mouseButton) -> void
+inline auto handleTileClick(Tile& chosenTile, ::sf::Mouse::Button mouseButton) -> void
 {
     using enum ::sf::Mouse::Button;
 
