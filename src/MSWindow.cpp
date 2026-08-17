@@ -50,7 +50,7 @@ auto MSWindow::handleLastEvent(GameContext& context) -> void
     {
         const auto mousePos{static_cast<::sf::Vector2f>(mouse->position)};
 
-        if (auto tile{BombUtils::clickedTile(context.grid_, mousePos)})
+        if (auto* tile{BombUtils::clickedTile(context.grid_, mousePos)})
         {
             BombUtils::handleTileClick(*tile, mouse->button);
         }

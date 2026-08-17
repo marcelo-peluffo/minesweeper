@@ -33,17 +33,18 @@ inline auto findNeighboringBombs(const std::vector<Tile>& grid, int tile_id) -> 
     return count;
 }
 
-inline auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) -> std::optional<Tile>
+// make sure to return Tile* and not std optional Tile because that causes a copy return and doesn't modify original grid
+inline auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) -> Tile*
 {
-    for (const auto& tile : grid)
+    for (auto& tile : grid)
     {
         if (tile.shape_.getGlobalBounds().contains(mousePos))
         {
-            return tile;
+            return std::addressof(tile);
         }
     }
 
-    return std::nullopt;
+    return nullptr;
 }
 
 // only setting state, not actually doing something with the new state
