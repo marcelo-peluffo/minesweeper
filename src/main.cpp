@@ -8,9 +8,12 @@ auto main() -> int
 
     while (window.isOpen())
     {
+        while (const auto event{window.pollEvent()})
+        {
+            window.handleLastEvent(gameContext);
+        }
+
         window.render(gameContext);
-        window.pollEvent();
-        window.handleLastEvent(gameContext);
     }
 
     return 0;
