@@ -47,20 +47,4 @@ inline auto clickedTile(std::vector<Tile>& grid, const ::sf::Vector2f mousePos) 
     return nullptr;
 }
 
-// only setting state, not actually doing something with the new state
-inline auto handleTileClick(Tile& chosenTile, ::sf::Mouse::Button mouseButton) -> void
-{
-    using enum ::sf::Mouse::Button;
-
-    if (mouseButton == Left)
-    {
-        chosenTile.shape_.setFillColor(::sf::Color::Red);
-        chosenTile.clicked_ = true;
-    }
-    // flag logic
-    else if (mouseButton == Right)
-    {
-    }
-}
-
 }  // namespace BombUtils

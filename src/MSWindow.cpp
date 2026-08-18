@@ -52,7 +52,7 @@ auto MSWindow::handleLastEvent(GameContext& context) -> void
 
         if (auto* tile{BombUtils::clickedTile(context.grid_, mousePos)})
         {
-            BombUtils::handleTileClick(*tile, mouse->button);
+            tile->processClick(mouse->button);
         }
     }
 }

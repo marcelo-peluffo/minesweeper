@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <random>
 #include "constants.h"
 
@@ -17,9 +18,11 @@ struct Tile
         return randomNum <= constants::chanceForBomb;
     }
 
-    inline static auto counter{0};
-    static constexpr auto width{100};
-    static constexpr auto height{100};
+    auto processClick(::sf::Mouse::Button mouseButton) -> void;
+
+    inline static auto sCounter{0};
+    static constexpr auto sWidth{100};
+    static constexpr auto sHeight{100};
     sf::RectangleShape shape_;
     sf::Text textNeighboringBombs_;
     bool clicked_{};
@@ -28,5 +31,5 @@ struct Tile
     int id_{};
 
    private:
-    constexpr auto calculateTilePosition(int tileId, int cols, int tileWidth, int tileHeight) -> sf::Vector2f;
+    constexpr auto calculateTilePosition(int cols) const -> sf::Vector2f;
 };

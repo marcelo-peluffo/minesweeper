@@ -1,19 +1,36 @@
 #include "Tile.h"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include "Text.h"
+#include "constants.h"
 
-Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::shouldHaveBomb()), id_(counter++)
+Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::shouldHaveBomb()), id_(sCounter++)
 {
     shape_.setFillColor(sf::Color::Green);
-    shape_.setPosition(calculateTilePosition(id_, constants::numCols, width, height));
-    shape_.setSize(sf::Vector2f(width - constants::spaceBetweenTiles, height - constants::spaceBetweenTiles));
+    shape_.setPosition(calculateTilePosition(constants::numCols));
+    shape_.setSize(sf::Vector2f(sWidth - constants::spaceBetweenTiles, sHeight - constants::spaceBetweenTiles));
 
     textNeighboringBombs_.setPosition(shape_.getPosition());
 }
 
-constexpr auto Tile::calculateTilePosition(int tileId, int cols, int tileWidth, int tileHeight) -> sf::Vector2f
+auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
 {
-    const auto row{tileId / cols};
-    const auto col{tileId % cols};
-    return {static_cast<float>(col * tileWidth), static_cast<float>(row * tileHeight)};
+    using enum ::sf::Mouse::Button;
+
+    if (mouseButton == Left)
+    {
+        shape_.setFillColor(constants::exposedTileColor);
+        clicked_ = true;
+    }
+    // flag logic
+    else if (mouseButton == Right)
+    {
+    }
+}
+
+constexpr auto Tile::calculateTilePosition(int cols) const -> sf::Vector2f
+{
+    const auto row{id_ / cols};
+    const auto col{id_ % cols};
+    return {static_cast<float>(col * sWidth), static_cast<float>(row * sHeight)};
 }
