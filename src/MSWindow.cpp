@@ -17,9 +17,9 @@ auto MSWindow::render(const GameContext& context) -> void
     {
         underlyingWindow_.draw(tile.shape_);
 
-        if (tile.flagSprite_)
+        if (tile.flag_)
         {
-            underlyingWindow_.draw(*tile.flagSprite_);
+            underlyingWindow_.draw((*tile.flag_).getSprite());
         }
 
         if (tile.clicked_)

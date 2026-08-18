@@ -4,6 +4,7 @@
 #include <SFML/Window/Mouse.hpp>
 #include <random>
 #include "constants.h"
+#include "Flag.h"
 
 struct Tile
 {
@@ -26,7 +27,7 @@ struct Tile
     static constexpr auto sHeight{100};
     sf::RectangleShape shape_;
     sf::Text textNeighboringBombs_;
-    std::optional<::sf::Sprite> flagSprite_;
+    std::optional<Flag> flag_;
     bool clicked_{};
     bool flagged_{};
     bool hasBomb_{};

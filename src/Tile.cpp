@@ -42,13 +42,11 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
 
         if (flagged_)
         {
-            flagSprite_ = std::nullopt;
+            flag_ = {};
         }
         else
         {
-            flagSprite_.emplace(constants::flagTexture);
-            flagSprite_->setPosition(shape_.getPosition());
-            flagSprite_->setScale({0.4f, 0.4f});
+            flag_.emplace(shape_.getPosition());
         }
     }
 }

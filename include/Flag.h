@@ -8,6 +8,7 @@ struct Flag
 {
    public:
     Flag();
+    Flag(const ::sf::Vector2f& pos);
 
     [[nodiscard]] auto getSprite() const -> const ::sf::Sprite&;
 
