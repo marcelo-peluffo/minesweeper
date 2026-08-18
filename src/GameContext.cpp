@@ -6,7 +6,10 @@ GameContext::GameContext() : grid_(static_cast<std::size_t>(constants::numberOfT
     for (auto& tile : grid_.getUnderlyingGrid())
     {
         tile.neighboringBombs_ = grid_.findNeighboringBombs(tile);
-        tile.textNeighboringBombs_.setString(std::to_string(tile.neighboringBombs_));
+        if (!tile.hasBomb_)
+        {
+            tile.textNeighboringBombs_.setString(std::to_string(tile.neighboringBombs_));
+        }
     }
 }
 

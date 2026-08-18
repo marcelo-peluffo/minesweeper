@@ -6,6 +6,11 @@
 
 Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::shouldHaveBomb()), id_(sCounter++)
 {
+    if (hasBomb_)
+    {
+        textNeighboringBombs_.setString("Bomb");
+    }
+
     shape_.setFillColor(sf::Color::Green);
     shape_.setPosition(calculateTilePosition(constants::numCols));
     shape_.setSize(sf::Vector2f(sWidth - constants::spaceBetweenTiles, sHeight - constants::spaceBetweenTiles));
@@ -21,6 +26,12 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
     {
         shape_.setFillColor(constants::exposedTileColor);
         clicked_ = true;
+
+        if (hasBomb_)
+        {
+            // end the game somehow
+            shape_.setFillColor(::sf::Color::Blue);
+        }
     }
     // flag logic
     else if (mouseButton == Right)
