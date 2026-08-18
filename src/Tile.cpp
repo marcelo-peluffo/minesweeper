@@ -3,6 +3,7 @@
 #include <SFML/Window/Mouse.hpp>
 #include "Text.h"
 #include "constants.h"
+#include "Game.h"
 
 Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::shouldHaveBomb()), id_(sCounter++)
 {
@@ -29,8 +30,8 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
 
         if (hasBomb_)
         {
-            // end the game somehow
             shape_.setFillColor(::sf::Color::Blue);
+            Game::getInstance().updateState(State::end);
         }
     }
     // flag logic

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "State.h"
 
 auto Game::getInstance() -> Game&
 {
@@ -8,7 +9,7 @@ auto Game::getInstance() -> Game&
 
 auto Game::start() -> void
 {
-    while (window_.isOpen())
+    while (gameContext_.state_ != State::end)
     {
         while (const auto event{window_.pollEvent()})
         {
