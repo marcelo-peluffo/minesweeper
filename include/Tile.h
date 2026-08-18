@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <random>
 #include "constants.h"
@@ -25,7 +26,9 @@ struct Tile
     static constexpr auto sHeight{100};
     sf::RectangleShape shape_;
     sf::Text textNeighboringBombs_;
+    std::optional<::sf::Sprite> flagSprite_;
     bool clicked_{};
+    bool flagged_{};
     bool hasBomb_{};
     int neighboringBombs_{};
     int id_{};
