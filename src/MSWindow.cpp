@@ -17,10 +17,16 @@ auto MSWindow::render(const GameContext& context) -> void
     {
         underlyingWindow_.draw(tile.shape_);
 
+        if (tile.flagSprite_)
+        {
+            underlyingWindow_.draw(*tile.flagSprite_);
+        }
+
         if (tile.clicked_)
         {
             underlyingWindow_.draw(tile.textNeighboringBombs_);
         }
+
     }
 
     underlyingWindow_.display();
