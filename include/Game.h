@@ -11,6 +11,8 @@ public:
     auto start() -> void;
     auto updateState(State newState) -> void;
 
+    Game(const Game&) = delete;
+    Game(Game&&) = delete;
 
 private:
     MSWindow window_;

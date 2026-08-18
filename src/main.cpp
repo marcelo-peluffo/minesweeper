@@ -1,20 +1,8 @@
-#include "GameContext.h"
-#include "MSWindow.h"
+#include "Game.h"
 
 auto main() -> int
 {
-    MSWindow window;
-    GameContext gameContext;
+    auto& game{Game::getInstance()};
 
-    while (window.isOpen())
-    {
-        while (const auto event{window.pollEvent()})
-        {
-            window.handleLastEvent(gameContext);
-        }
-
-        window.render(gameContext);
-    }
-
-    return 0;
+    game.start();
 }
