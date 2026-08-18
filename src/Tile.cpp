@@ -43,6 +43,7 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
         if (flagged_)
         {
             flag_ = {};
+            --Flag::count;
         }
         else
         {
