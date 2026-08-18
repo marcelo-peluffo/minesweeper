@@ -1,7 +1,6 @@
 #include "MSWindow.h"
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include "BombUtils.h"
 #include "GameContext.h"
 #include "Text.h"
 
@@ -14,7 +13,7 @@ auto MSWindow::render(const GameContext& context) -> void
     /*
      * should double check if text pos = tile pos center
      */
-    for (const auto& tile : context.grid_)
+    for (const auto& tile : context.grid_.getUnderlyingGrid())
     {
         underlyingWindow_.draw(tile.shape_);
 
@@ -50,7 +49,7 @@ auto MSWindow::handleLastEvent(GameContext& context) -> void
     {
         const auto mousePos{static_cast<::sf::Vector2f>(mouse->position)};
 
-        if (auto* tile{BombUtils::clickedTile(context.grid_, mousePos)})
+        if (auto* tile{context.grid_.clickedTile(mousePos)})
         {
             tile->processClick(mouse->button);
         }

@@ -22,6 +22,7 @@ add_executable(
     src/Tile.cpp
     src/GameContext.cpp
     src/MSWindow.cpp
+    src/Grid.cpp
 )
 
 target_include_directories(Minesweeper PRIVATE include)

@@ -1,13 +1,12 @@
 #pragma once
 #include "State.h"
-#include "Tile.h"
-#include <vector>
+#include "Grid.h"
 
 struct GameContext
 {
     explicit GameContext();
-    explicit GameContext(std::vector<Tile>& grid, State state);
+    explicit GameContext(Grid grid, State state);
 
-    std::vector<Tile> grid_;
+    Grid grid_;
     State state_{State::start};
 };
