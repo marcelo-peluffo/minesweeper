@@ -1,9 +1,10 @@
 #include "Tile.h"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <optional>
+#include "Game.h"
 #include "Text.h"
 #include "constants.h"
-#include "Game.h"
 
 Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::shouldHaveBomb()), id_(sCounter++)
 {
@@ -37,6 +38,18 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
     // flag logic
     else if (mouseButton == Right)
     {
+        flagged_ = !flagged_;
+
+        if (flagged_)
+        {
+            flagSprite_ = std::nullopt;
+        }
+        else
+        {
+            flagSprite_.emplace(constants::flagTexture);
+            flagSprite_->setPosition(shape_.getPosition());
+            flagSprite_->setScale({0.4f, 0.4f});
+        }
     }
 }
 
