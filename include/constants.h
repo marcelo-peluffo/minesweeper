@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics.hpp>
+
 namespace constants
 {
 inline constexpr auto width{1920};
@@ -13,4 +16,5 @@ inline constexpr auto numCols{5};
 inline constexpr auto numberOfTiles{numRows * numCols};
 inline constexpr auto chanceForBomb{15};
 inline constexpr auto exposedTileColor{::sf::Color::Red};
+inline ::sf::Texture flagTexture("assets/flag.png");
 }  // namespace constants
