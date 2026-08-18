@@ -8,7 +8,6 @@ Tile::Tile() : textNeighboringBombs_(Text::font, Text::noBombs), hasBomb_(Tile::
 {
     if (hasBomb_)
     {
-        shape_.setFillColor(::sf::Color::Blue);
         textNeighboringBombs_.setString("Bomb");
     }
 
@@ -31,6 +30,7 @@ auto Tile::processClick(::sf::Mouse::Button mouseButton) -> void
         if (hasBomb_)
         {
             // end the game somehow
+            shape_.setFillColor(::sf::Color::Blue);
         }
     }
     // flag logic
